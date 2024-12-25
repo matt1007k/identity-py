@@ -1,0 +1,9 @@
+services:
+  server:
+    container_name: identity-py-server
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+    external_links:
+      - great_solomon

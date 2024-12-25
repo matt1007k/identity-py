@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.routes.identities import identities_router
+from routes.identities import identities_router
 
 
 app = FastAPI()
