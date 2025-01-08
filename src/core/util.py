@@ -8,7 +8,7 @@ def createDriver() -> webdriver.Chrome:
     # option = webdriver.ChromeOptions()
     option = webdriver.FirefoxOptions()
     option.add_argument("--no-sandbox")
-    option.add_argument("--headless")
+    # option.add_argument("--headless")
     option.add_argument("--window-size=1920,1080")
     driver = webdriver.Remote(
         command_executor="http://0.0.0.0:4444",
