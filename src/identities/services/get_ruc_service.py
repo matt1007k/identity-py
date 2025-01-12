@@ -22,7 +22,9 @@ def get_ruc_service(ruc: str) -> RucData:
 
 def get_ruc_from_web(ruc: str) -> RucData:
     driver = createDriver()
+
     try:
+        driver.get_network_conditions()
         driver.get("https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias")
         driver.implicitly_wait(6)
         driver.find_element(By.XPATH, '//*[@id="txtRuc"]').send_keys(ruc)

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from core.config.env import BROWSER_URL, REDIS_HOST, REDIS_PORT
 from core.util import createDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -56,8 +57,9 @@ def get_dni_from_web(dni: str) -> DniData:
     except NoSuchElementException:
         print("Error: El elemento con ID 'dni' no existe.")
         raise
-    except Exception:
-        print("Error server")
-        raise
+    # except Exception :
+    #     print(f"Error: {e}")
+    #     print("Error server")
+    #     raise
     finally:
         driver.quit()

@@ -3,11 +3,13 @@ import json
 from typing import Optional, TypeVar
 from pydantic import BaseModel
 
+from core.config.env import REDIS_HOST, REDIS_PORT
+
 T = TypeVar("T", bound=BaseModel)
 
 
 class RedisCache:
-    def __init__(self, host="localhost", port=6379, db=0):
+    def __init__(self, host=REDIS_HOST, port=int(REDIS_PORT), db=0):
         self.client = redis.Redis(host=host, port=port, db=db, decode_responses=True)
         self.default_expiration = 60 * 60 * 24  # 24 hours in seconds
 
