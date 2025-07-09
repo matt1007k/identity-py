@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from core.config.env import BROWSER_URL, REDIS_HOST, REDIS_PORT
+from core.config.env import REDIS_HOST, REDIS_PORT
 from core.util import createDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -18,9 +18,11 @@ class DniData(BaseModel):
 def get_dni_service(dni: str) -> DniData:
     # Try to get data from cache first
     cached_data = redis_cache.get_data(f"dni:{dni}", DniData)
+    print(f"cached_data: {cached_data}")
     if cached_data:
         return cached_data
 
+    print("pass")
     # If not in cache, proceed with web scraping
     return get_dni_from_web(dni)
 

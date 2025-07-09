@@ -9,11 +9,12 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class RedisCache:
-    def __init__(self, host=REDIS_HOST, port=int(REDIS_PORT), db=0):
+    def __init__(self, host=REDIS_HOST, port=REDIS_PORT, db=0):
         self.client = redis.Redis(host=host, port=port, db=db, decode_responses=True)
         self.default_expiration = 60 * 60 * 24  # 24 hours in seconds
 
     def get_data(self, key: str, model_class: type[T]) -> Optional[T]:
+        print(REDIS_HOST, REDIS_PORT)
         """Retrieve data from Redis cache"""
         cached = self.client.get(key)
         if cached:
