@@ -16,11 +16,13 @@ def createDriver() -> webdriver.Chrome:
         options.add_argument("--disable-dev-shm-usage")
         # options.add_experimental_option("excludeSwitches", ["enable-automation"])
         # options.add_experimental_option("useAutomationExtension", False)
-        print("driver created")
 
         service = Service(ChromeDriverManager().install())
+        print("service created")
         driver = Chrome(service=service, options=options)
-        print(driver.title)
+        print("driver created")
+
+        print(f"Driver: {driver.title}")
         return driver
     except ConnectionError:
         raise ConnectionError(
