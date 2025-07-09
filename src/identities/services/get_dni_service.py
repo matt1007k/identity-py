@@ -22,7 +22,7 @@ def get_dni_service(dni: str) -> DniData:
     if cached_data:
         return cached_data
 
-    print("pass")
+    print("proceed with web scraping")
     # If not in cache, proceed with web scraping
     return get_dni_from_web(dni)
 
@@ -30,7 +30,7 @@ def get_dni_service(dni: str) -> DniData:
 def get_dni_from_web(dni: str) -> DniData:
     driver = createDriver()
     try:
-        wait = Wait(driver, 1)
+        wait = Wait(driver, 10)
         driver.get("https://eldni.com")
         print(driver.current_url)
         driver.save_screenshot("dnipage.png")
