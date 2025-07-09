@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver import Chrome
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
-from selenium.common.exceptions import NoSuchDriverException
+from selenium.common.exceptions import NoSuchDriverException, SessionNotCreatedException
 from requests.exceptions import ConnectionError
 
 
@@ -30,5 +30,7 @@ def createDriver() -> webdriver.Chrome:
         )
     except NoSuchDriverException as e:
         raise Exception(f"Failed no found web driver: {str(e)}")
+    except SessionNotCreatedException as e:
+        raise Exception(f"Failed session not created: {str(e)}")
     except Exception as e:
         raise Exception(f"Failed to create web driver: {str(e)}")
