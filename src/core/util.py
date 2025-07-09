@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver import Chrome
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
+from selenium.common.exceptions import NoSuchDriverException
 from requests.exceptions import ConnectionError
 
 
@@ -24,5 +25,7 @@ def createDriver() -> webdriver.Chrome:
         raise ConnectionError(
             "No internet connection available. Please check your network connection."
         )
+    except NoSuchDriverException as e:
+        raise Exception(f"Failed no found web driver: {str(e)}")
     except Exception as e:
         raise Exception(f"Failed to create web driver: {str(e)}")
