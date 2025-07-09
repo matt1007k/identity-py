@@ -3,6 +3,7 @@ from core.util import createDriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait as Wait
+from selenium.webdriver.support import expected_conditions as EC
 from core.redis_util import redis_cache
 
 
@@ -25,12 +26,15 @@ def get_ruc_service(ruc: str) -> RucData:
 
 def get_ruc_from_web(ruc: str) -> RucData:
     driver = createDriver()
-
+    url = "https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias"
+    print("Starting")
     try:
-        print("Starting web scraping")
-        wait = Wait(driver, 10)
-        driver.get_network_conditions()
-        driver.get("https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias")
+        print("Starting scraping web RUC")
+        # Wait(driver, 10)
+        # driver.get_network_conditions()
+        driver.get(url)
+        print(f"URL : {driver.current_url}")
+        driver.save_screenshot("rucpage.png")
         driver.implicitly_wait(6)
         driver.find_element(By.XPATH, '//*[@id="txtRuc"]').send_keys(ruc)
         driver.find_element(By.ID, "btnAceptar").click()
@@ -46,7 +50,9 @@ def get_ruc_from_web(ruc: str) -> RucData:
         return ruc_data
     except NoSuchElementException:
         raise Exception("Business not found")
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Error server")
         raise
     finally:
         driver.quit()

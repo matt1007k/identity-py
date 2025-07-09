@@ -17,10 +17,8 @@ class RedisCache:
         print(REDIS_HOST, REDIS_PORT)
         """Retrieve data from Redis cache"""
         cached = self.client.get(key)
-        print("Retrieve data from Redis cache", cached)
         if cached:
             data = json.loads(cached)
-            print("Retrieve data JSON", data)
             return model_class(**data)
         return None
 
