@@ -20,6 +20,7 @@ def createDriver() -> webdriver.Chrome:
 
         service = Service(ChromeDriverManager().install())
         driver = Chrome(service=service, options=options)
+        print(driver.title)
         return driver
     except ConnectionError:
         raise ConnectionError(
