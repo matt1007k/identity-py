@@ -13,9 +13,11 @@ class RucData(BaseModel):
 def get_ruc_service(ruc: str) -> RucData:
     # Try to get data from cache first
     cached_data = redis_cache.get_data(f"ruc:{ruc}", RucData)
+    print(f"cached_data: {cached_data}")
     if cached_data:
         return cached_data
 
+    print("proceed with web scraping")
     # Continue with web scraping if not in cache
     return get_ruc_from_web(ruc)
 
