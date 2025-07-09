@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from core.config.env import REDIS_HOST, REDIS_PORT
 from core.util import createDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -31,7 +30,7 @@ def get_dni_from_web(dni: str) -> DniData:
     driver = createDriver()
     try:
         print("Starting web scraping")
-        wait = Wait(driver, 1)
+        wait = Wait(driver, 10)
         driver.get_network_conditions()
         driver.get("https://eldni.com")
         print(driver.current_url)

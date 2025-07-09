@@ -4,8 +4,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from requests.exceptions import ConnectionError
 
-from core.config.env import BROWSER_URL
-
 
 def createDriver() -> webdriver.Chrome:
     try:

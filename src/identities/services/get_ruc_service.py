@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from core.util import createDriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait as Wait
 from core.redis_util import redis_cache
 
 
@@ -27,6 +28,7 @@ def get_ruc_from_web(ruc: str) -> RucData:
 
     try:
         print("Starting web scraping")
+        wait = Wait(driver, 10)
         driver.get_network_conditions()
         driver.get("https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias")
         driver.implicitly_wait(6)
