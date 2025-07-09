@@ -24,6 +24,7 @@ def get_ruc_from_web(ruc: str) -> RucData:
     driver = createDriver()
 
     try:
+        print("Starting web scraping")
         driver.get_network_conditions()
         driver.get("https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias")
         driver.implicitly_wait(6)
@@ -36,6 +37,7 @@ def get_ruc_from_web(ruc: str) -> RucData:
             ruc=ruc,
             business_name=business_name_with_ruc.strip().split(" - ").pop().strip(),
         )
+        print(f"ruc:{ruc}", ruc_data)
         redis_cache.save_data(f"ruc:{ruc}", ruc_data)
         return ruc_data
     except NoSuchElementException:

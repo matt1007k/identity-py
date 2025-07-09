@@ -30,11 +30,12 @@ def get_dni_service(dni: str) -> DniData:
 def get_dni_from_web(dni: str) -> DniData:
     driver = createDriver()
     try:
-        wait = Wait(driver, 10)
+        print("Starting web scraping")
+        wait = Wait(driver, 1)
+        driver.get_network_conditions()
         driver.get("https://eldni.com")
         print(driver.current_url)
         driver.save_screenshot("dnipage.png")
-        wait = Wait(driver, 10).until(EC.title_contains("Index"))
         driver.find_element(By.ID, "dni").send_keys(dni)
         driver.find_element(By.ID, "btn-buscar-datos-por-dni").click()
 
@@ -54,6 +55,7 @@ def get_dni_from_web(dni: str) -> DniData:
             paternal_surname=paternal_surname,
             maternal_surname=maternal_surname,
         )
+        print(f"dni:{dni}", dni_data)
 
         # Save to cache before returning
         redis_cache.save_data(f"dni:{dni}", dni_data)
