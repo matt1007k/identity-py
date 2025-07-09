@@ -11,13 +11,12 @@ def createDriver() -> webdriver.Chrome:
     try:
         option = webdriver.ChromeOptions()
         option.add_argument("--no-sandbox")
-        # option.add_argument("--headless")
+        option.add_argument("--headless")
         option.add_argument("--window-size=1920,1080")
         print("driver created")
 
         service = Service(ChromeDriverManager().install())
         driver = Chrome(service=service, options=option)
-        print(f"driver {driver} intialized into {BROWSER_URL}")
         return driver
     except ConnectionError:
         raise ConnectionError(
