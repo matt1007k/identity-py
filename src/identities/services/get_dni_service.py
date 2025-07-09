@@ -32,6 +32,7 @@ def get_dni_from_web(dni: str) -> DniData:
     try:
         wait = Wait(driver, 1)
         driver.get("https://eldni.com")
+        wait = Wait(driver, 10).until(EC.title_contains("Index"))
         driver.save_screenshot("dnipage.png")
         driver.find_element(By.ID, "dni").send_keys(dni)
         driver.find_element(By.ID, "btn-buscar-datos-por-dni").click()
