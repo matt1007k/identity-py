@@ -62,9 +62,9 @@ def get_dni_from_web(dni: str) -> DniData:
     except NoSuchElementException:
         print("Error: El elemento con ID 'dni' no existe.")
         raise
-    # except Exception :
-    #     print(f"Error: {e}")
-    #     print("Error server")
-    #     raise
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Error server")
+        raise
     finally:
         driver.quit()
