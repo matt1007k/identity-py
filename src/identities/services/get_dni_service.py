@@ -12,6 +12,31 @@ class DniData(BaseModel):
     names: str
     paternal_surname: str
     maternal_surname: str
+    verification_code: str
+
+    @classmethod
+    def from_text(cls, text: str):
+        parsed_data = {}
+        lines = text.split("\n")
+        for line in lines:
+            if ":" in line:
+                key, value = line.split(":", 1)
+                key = key.strip()
+                value = value.strip()
+
+                if "Número de DNI" in key:
+                    parsed_data["dni"] = value
+                elif "Nombres" in key:
+                    parsed_data["names"] = value
+                elif "Apellido Paterno" in key:
+                    parsed_data["paternal_surname"] = value
+                elif "Apellido Materno" in key:
+                    parsed_data["maternal_surname"] = value
+                elif "Código de Verificación" in key:
+                    parsed_data["verification_code"] = value
+
+        # Pydantic automáticamente validará los datos al crear la instancia
+        return cls(**parsed_data)
 
 
 def get_dni_service(dni: str) -> DniData:
@@ -32,28 +57,20 @@ def get_dni_from_web(dni: str) -> DniData:
     try:
         print("Starting scraping web DNI")
         wait = Wait(driver, 10)
-        driver.get("https://eldni.com")
+        driver.get("https://dniperu.com/buscar-dni-nombres-apellidos")
+        print(driver.title)
         print(f"URL : {driver.current_url}")
         driver.save_screenshot("dnipage.png")
-        driver.find_element(By.ID, "dni").send_keys(dni)
-        driver.find_element(By.ID, "btn-buscar-datos-por-dni").click()
+        driver.find_element(By.ID, "dni4").send_keys(dni)
+        driver.find_element(By.ID, "buscar-dni-button").click()
 
-        names = wait.until(
-            EC.presence_of_element_located((By.ID, "nombres"))
-        ).get_attribute("value")
-        paternal_surname = wait.until(
-            EC.presence_of_element_located((By.ID, "apellidop"))
-        ).get_attribute("value")
-        maternal_surname = wait.until(
-            EC.presence_of_element_located((By.ID, "apellidom"))
+        result_container = wait.until(
+            EC.presence_of_element_located((By.ID, "resultado_dni"))
         ).get_attribute("value")
 
-        dni_data = DniData(
-            dni=dni,
-            names=names,
-            paternal_surname=paternal_surname,
-            maternal_surname=maternal_surname,
-        )
+        print(f"result {result_container}")
+
+        dni_data = DniData.from_text(result_container or "")
         print(f"dni:{dni}", dni_data)
 
         # Save to cache before returning
