@@ -6,6 +6,11 @@ from selenium.webdriver.support.ui import WebDriverWait as Wait
 from selenium.common.exceptions import NoSuchElementException
 from core.redis_util import redis_cache
 
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 class DniData(BaseModel):
     dni: str
@@ -39,6 +44,15 @@ class DniData(BaseModel):
         return cls(**parsed_data)
 
 
+options = Options()
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+driver = webdriver.Chrome(
+    service=Service(ChromeDriverManager().install()), options=options
+)
+
+
 def get_dni_service(dni: str) -> DniData:
     # Try to get data from cache first
     cached_data = redis_cache.get_data(f"dni:{dni}", DniData)
@@ -52,7 +66,7 @@ def get_dni_service(dni: str) -> DniData:
 
 
 def get_dni_from_web(dni: str) -> DniData:
-    driver = createDriver()
+    # driver = createDriver()
     print("Starting")
     try:
         print("Starting scraping web DNI")
@@ -77,8 +91,9 @@ def get_dni_from_web(dni: str) -> DniData:
         redis_cache.save_data(f"dni:{dni}", dni_data)
         return dni_data
 
-    except NoSuchElementException:
-        print("Error: El elemento con ID 'dni' no existe.")
+    except NoSuchElementException as e:
+        print(f"Error: {e}")
+        print("Error: El elemento html no se encontró")
         raise
     except Exception as e:
         print(f"Error: {e}")
