@@ -26,13 +26,11 @@ def get_ruc_service(ruc: str) -> RucData:
 
 def get_ruc_from_web(ruc: str) -> RucData:
     driver = createDriver()
-    url = "https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias"
     print("Starting")
     try:
         print("Starting scraping web RUC")
-        # Wait(driver, 10)
-        # driver.get_network_conditions()
-        driver.get(url)
+        Wait(driver, 10)
+        driver.get("https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias")
         print(f"URL : {driver.current_url}")
         driver.save_screenshot("rucpage.png")
         driver.implicitly_wait(6)

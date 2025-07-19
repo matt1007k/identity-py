@@ -28,12 +28,11 @@ def get_dni_service(dni: str) -> DniData:
 
 def get_dni_from_web(dni: str) -> DniData:
     driver = createDriver()
-    url = "https://eldni.com"
     print("Starting")
     try:
         print("Starting scraping web DNI")
         wait = Wait(driver, 10)
-        driver.get(url)
+        driver.get("https://eldni.com")
         print(f"URL : {driver.current_url}")
         driver.save_screenshot("dnipage.png")
         driver.find_element(By.ID, "dni").send_keys(dni)
